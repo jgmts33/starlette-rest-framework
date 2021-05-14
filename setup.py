@@ -8,7 +8,7 @@ setup(
     description = 'A REST framework for Starlette inspired by Django REST framework.',
     author = 'Luke Sapan',
     url = 'https://github.com/lsapan/starlette-rest-framework',
-    download_url = 'https://github.com/lsapan/starlette-rest-framework/archive/refs/tags/0.0.1.tar.gz',
+    download_url = 'https://github.com/lsapan/starlette-rest-framework/archive/refs/tags/0.0.2.tar.gz',
     keywords = ['starlette', 'rest', 'framework'],
     install_requires=[
         'starlette',
