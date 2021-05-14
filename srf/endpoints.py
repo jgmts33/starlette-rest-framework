@@ -85,3 +85,7 @@ class FormEndpoint(APIEndpoint):
 
     async def submit(self, request, data) -> Union[dict,list,str,bool,Response,None]:
         raise NotImplementedError()
+
+    async def options(self, request) -> Response:
+        # TODO: For CORS, need to see if there's a better way to handle this
+        return Response()
