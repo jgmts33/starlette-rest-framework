@@ -54,13 +54,19 @@ class APIEndpoint(HTTPEndpoint):
 
 
 class FormEndpoint(APIEndpoint):
-    async def post(self, request) -> Response:
-        model_class = get_type_hints(self.submit)['data']
-        data = await validate_data(
-            model_class=model_class,
-            data=await request.json()
-        )
-        result = await self.submit(request, data)
+    async def handle(self, method, request, raw_data) -> Response:
+        data = None
+        if model_class := get_type_hints(method).get('data'):
+            data = await validate_data(
+                model_class=model_class,
+                data=raw_data,
+            )
+
+        try:
+            result = await method(request, data)
+        except NotImplementedError:
+            return Response(status_code=405)
+
         if result:
             if isinstance(result, Response):
                 return result
@@ -68,5 +74,14 @@ class FormEndpoint(APIEndpoint):
         else:
             return Response(status_code=204)
 
-    async def submit(self, request, data) -> Union[dict,list,str,bool,None]:
-        raise NotImplementedError('Be sure to implement submit on your FormEndpoint.')
+    async def get(self, request) -> Response:
+        return await self.handle(self.fetch, request, raw_data=request.query_params)
+
+    async def post(self, request) -> Response:
+        return await self.handle(self.submit, request, raw_data=await request.json())
+
+    async def fetch(self, request, data) -> Union[dict,list,str,bool,Response,None]:
+        raise NotImplementedError()
+
+    async def submit(self, request, data) -> Union[dict,list,str,bool,Response,None]:
+        raise NotImplementedError()

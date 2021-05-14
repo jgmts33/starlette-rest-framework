@@ -3,7 +3,7 @@ from distutils.core import setup
 setup(
     name = 'starlette-rest-framework',
     packages = ['srf'],
-    version = '0.0.1',
+    version = '0.0.2',
     license='MIT',
     description = 'A REST framework for Starlette inspired by Django REST framework.',
     author = 'Luke Sapan',
