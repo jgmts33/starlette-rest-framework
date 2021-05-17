@@ -67,7 +67,7 @@ class FormEndpoint(APIEndpoint):
         except NotImplementedError:
             return Response(status_code=405)
 
-        if result:
+        if result is not None:
             if isinstance(result, Response):
                 return result
             return JSONResponse(result)
